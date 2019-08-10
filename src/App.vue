@@ -1,10 +1,62 @@
 <template>
-  <div class="app">
-    <router-view/>
-  </div>
-</template>
+  <div class="wrapper">
+    <Claim/>
+    <SearchInput v-model="searchValue" @input="handleInput"/>
+    <HeroImage/>
+    
+      
 
+      <!--  <ul>
+          <li v-for="item in results" :key="item.data[0].nasa_id">
+            <p>{{ item.data[0].description }}</p>
+          </li>
+        </ul>
+        -->
+    
+  </div>
+
+</template>
+<script>
+import axios from 'axios';
+import debounce from 'lodash.debounce';
+import Claim from '@/components/Claim.vue';
+import SearchInput from '@/components/SearchInput.vue';
+import HeroImage from '@/components/HeroImage.vue';
+
+const API = 'https://images-api.nasa.gov/search';
+
+export default {
+    name:'App',
+    components:{
+      Claim,
+      SearchInput,
+      HeroImage,
+    },
+    data(){
+      return{
+          searchValue: '',
+          results: [],
+
+      };
+    }, 
+
+  methods: {
+      handleInput: debounce(function() {
+            console.log(this.searchValue);
+             axios.get(`${API}?q=${this.searchValue}&media_type=image`)
+          .then((response) => {
+              this.results = response.data.collection.items;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }, 500),
+  },
+
+};
+</script>
 <style lang="scss">
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,600,800&display=swap');
 
 * {
@@ -14,6 +66,20 @@ body {
   font-family: 'Montserrat', sans-serif;
   margin:0;
   padding:0;
+  color:white;
+  
+  .wrapper{
+     display:flex;
+     flex-direction: column;
+     align-items:center;
+     justify-content: center;
+     width:100%;
+     height:100vh;
+     padding:30px;
+     margin:0;
+     min-height:100vh;
+
+  }
 }
 
 </style>

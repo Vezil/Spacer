@@ -20,6 +20,8 @@ import axios from 'axios';
 import debounce from 'lodash.debounce';
 import Claim from '@/components/Claim.vue';
 import SearchInput from '@/components/SearchInput.vue';
+import HeroImage from '@/components/HeroImage.vue';
+
 const API = 'https://images-api.nasa.gov/search';
 
 export default {
@@ -66,6 +68,7 @@ export default {
      background-repeat:no-repeat;
      background-size:cover;
      background-position:80% 0%;
+     
   }
   
 </style>
